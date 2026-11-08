@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import net.sqlcipher.database.SupportFactory
+import net.zetetic.database.sqlcipher.SupportOpenHelperFactory
 import org.xeyronox.ledger.data.local.dao.TransactionDao
 import org.xeyronox.ledger.data.local.entity.TransactionEntity
 import org.xeyronox.ledger.data.security.KeyManager
@@ -25,9 +25,14 @@ abstract class LedgerDatabase : RoomDatabase() {
         }
 
         private fun buildDatabase(context: Context): LedgerDatabase {
+            try {
+                System.loadLibrary("sqlcipher")
+            } catch (e: UnsatisfiedLinkError) {
+                // In local unit test environments without native libs
+            }
             val keyManager = KeyManager(context.applicationContext)
             val passphrase = keyManager.getOrCreateDatabasePassphrase()
-            val factory = SupportFactory(passphrase)
+            val factory = SupportOpenHelperFactory(passphrase)
 
             return Room.databaseBuilder(
                 context.applicationContext,
