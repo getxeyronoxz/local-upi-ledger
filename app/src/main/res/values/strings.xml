@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LocalLedger</string>
+    <string name="accessibility_service_description">Local-first accessibility extraction service for UPI banking transactions on BHIM. Bypasses FLAG_SECURE locally in device memory without network access.</string>
+</resources>
